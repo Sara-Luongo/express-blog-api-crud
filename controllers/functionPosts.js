@@ -10,7 +10,7 @@ function show(request, response) {
     const idReal = Number(id)
 
     if (isNaN(idReal)) {
-        response.status(404)
+        response.status(400)
             .json({
                 errore: 'id non corretto',
                 results: null
@@ -18,7 +18,7 @@ function show(request, response) {
         return;
     }
     if (idReal <= 0) {
-        response.status(404)
+        response.status(400)
             .json({
                 errore: 'valore id negativo',
                 results: null
@@ -43,6 +43,7 @@ function show(request, response) {
 };
 
 function create(request, response) {
+    response.status(201)
     response.json({
         results: 'nuovo post creato'
     })
@@ -55,10 +56,42 @@ function update(request, response) {
 }
 
 function destroy(request, response) {
+    const { id } = request.params;
+    const idReal = Number(id)
 
-    response.json({
-        results: 'post eliminato'
-    })
+    if (isNaN(idReal)) {
+        response.status(400)
+            .json({
+                errore: 'id non corretto',
+                results: null
+            });
+        return;
+    }
+    if (idReal <= 0) {
+        response.status(400)
+            .json({
+                errore: 'valore id negativo',
+                results: null
+            });
+        return;
+    }
+    const foundPost = posts.find(post => {
+        return post.id === idReal
+    });
+    if (foundPost === undefined) {
+        response.status(404)
+            .json({
+                errore: 'id inesistente',
+                results: null
+            });
+        return;
+    }
+    const postsindex = posts.indexOf(foundPost);
+    posts.splice(postsindex, 1);
+
+
+    response.sendStatus(204)
+
 }
 
 
