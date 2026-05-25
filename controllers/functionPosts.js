@@ -43,7 +43,8 @@ function show(request, response) {
 };
 
 function create(request, response) {
-    response.status(201)
+    console.log(request.body);
+
     response.json({
         results: 'nuovo post creato'
     })
@@ -75,20 +76,18 @@ function destroy(request, response) {
             });
         return;
     }
-    const foundPost = posts.find(post => {
+    const foundPostIndex = posts.findIndex(post => {
         return post.id === idReal
     });
-    if (foundPost === undefined) {
+    if (foundPostIndex === -1) {
         response.status(404)
             .json({
-                errore: 'id inesistente',
+                errore: 'post inesistente',
                 results: null
             });
         return;
     }
-    const postsindex = posts.indexOf(foundPost);
-    posts.splice(postsindex, 1);
-
+    posts.splice(foundPostIndex, 1);
 
     response.sendStatus(204)
 
