@@ -111,7 +111,6 @@ function create(request, response) {
         });
         return;
     }
-
     for (let i = 0; i < tags.length; i++) {
         if (typeof tags[i] !== 'string' || tags[i].trim() === "") {
             response.json({
@@ -120,6 +119,21 @@ function create(request, response) {
             });
             return;
         }
+    }
+
+    if (!prep_time || typeof prep_time !== 'number' || prep_time.trim() === "") {
+        response.json({
+            error: 'questo campo è obbligatorio e deve contenere solo numeri',
+            results: null
+        });
+        return;
+    }
+    if (prep_time < 30 || prep_time > 240) {
+        response.json({
+            error: 'il tempo di preparazione non deve essere minore di trenta e superiore di 240',
+            results: null
+        });
+        return;
     }
 
 
