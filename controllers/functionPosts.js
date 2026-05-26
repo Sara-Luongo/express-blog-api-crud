@@ -43,7 +43,25 @@ function show(request, response) {
 };
 
 function create(request, response) {
-    console.log(request.body);
+    const { title, content, image, tags, prep_time, id, slug, published } = request.body;
+
+    if (!title || typeof title !== 'string' || title.trim() === "") {
+        response.status(400)
+        response.json({
+            error: 'il titolo inserito non è valido',
+            results: null
+        })
+        return;
+    };
+    if (title.length < 5) {
+        response.status(400)
+        response.json({
+            error: 'il titolo inserito è minore di 5 caratteri',
+            results: null
+        })
+        return;
+    };
+
 
     response.json({
         results: 'nuovo post creato'
