@@ -78,6 +78,22 @@ function create(request, response) {
         })
         return;
     }
+    if (!image || typeof image !== 'string' || image.trim() === "") {
+        response.status(400)
+        response.json({
+            error: 'campo immagine sbagliato o inesistente',
+            results: null
+        });
+        return;
+    }
+    if (!image.endsWith('.jpg') && !image.endsWith('.jpeg') && !image.endsWith('.png')) {
+        response.status(400)
+        response.json({
+            error: 'estensione immagine errata',
+            results: null
+        });
+        return;
+    };
 
 
     response.json({
