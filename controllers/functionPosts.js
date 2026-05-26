@@ -78,6 +78,7 @@ function create(request, response) {
         })
         return;
     }
+
     if (!image || typeof image !== 'string' || image.trim() === "") {
         response.status(400)
         response.json({
@@ -94,6 +95,33 @@ function create(request, response) {
         });
         return;
     };
+
+    if (!Array.isArray(tags)) {
+        response.status(400)
+        response.json({
+            error: 'i tags devono essere un array!',
+            results: null
+        });
+    }
+    return;
+    if (tags.length = 0) {
+        response.json({
+            error: 'array vuoto',
+            results: null
+        });
+        return;
+    }
+
+    for (let i = 0; i < tags.length; i++) {
+        if (typeof tags[i] !== 'string' || tags[i].trim() === "") {
+            response.json({
+                error: 'gli elementi degli array devono essere stringhe e non spazi vuoti',
+                results: null
+            });
+            return;
+        }
+    }
+
 
 
     response.json({
