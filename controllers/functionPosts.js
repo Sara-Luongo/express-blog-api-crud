@@ -162,8 +162,9 @@ function create(request, response) {
         response: newPost
     })
 }
+/*=========================================UPDATE============================================================================*/
 function update(request, response) {
-    const id = request.params.id;
+    const id = parseInt(request.params.id);
     const postToUpdate = posts.find(post => post.id === id);
     if (!postToUpdate) {
         response.status(404);
@@ -265,8 +266,22 @@ function update(request, response) {
         });
         return;
     }
+    const newSlug = title.toLowerCase().trim().replaceAll(" ", "-");
+
+
+
+    postToUpdate.title = title;
+    postToUpdate.content = content;
+    postToUpdate.image = image;
+    postToUpdate.prep_time = prep_time;
+    postToUpdate.tags = tags;
+    postToUpdate.slug = newSlug;
+
+
     response.json({
-        results: 'modificato post'
+        message: `post con id: ${id} modificato con successo`,
+        response: postToUpdate
+
     })
 }
 
