@@ -136,7 +136,22 @@ function create(request, response) {
         return;
     }
 
+    let newId = 1
+    if (posts.length > 0) {
+        newId = posts[postslength - 1].id + 1
+    };
+    const newSlug = title.toLowerCase().trim().replaceAll("", "-");
 
+    const newPost = {
+        id: newId,
+        title,
+        content,
+        image,
+        tags,
+        slug: newSlug,
+        published: true
+
+    };
 
     response.json({
         results: 'nuovo post creato'
