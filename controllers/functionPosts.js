@@ -48,7 +48,7 @@ function create(request, response) {
     if (!title || typeof title !== 'string' || title.trim() === "") {
         response.status(400)
         response.json({
-            error: 'il titolo inserito non è valido',
+            error: 'il titolo inserito non è valido, vuoto o solo spazi',
             results: null
         })
         return;
@@ -65,7 +65,7 @@ function create(request, response) {
     if (!content || typeof title !== 'string' || content.trim() === "") {
         response.status(400)
         response.json({
-            error: 'la descrizione non è valida',
+            error: 'la descrizione non è valida vuota o solo spazi',
             results: null
         });
         return;
@@ -73,7 +73,7 @@ function create(request, response) {
     if (content.length < 100) {
         response.status(400)
         response.json({
-            error: 'la descrizione inserita è minore di 100 caratteri',
+            error: 'la descrizione del content inserita è minore di 100 caratteri',
             results: null
         })
         return;
@@ -124,7 +124,7 @@ function create(request, response) {
 
     if (!prep_time || typeof prep_time !== 'number') {
         response.json({
-            error: 'questo campo è obbligatorio e deve contenere solo numeri',
+            error: 'il campo di preparazione è obbligatorio e deve contenere solo numeri',
             results: null
         });
         return;
@@ -163,7 +163,17 @@ function create(request, response) {
     })
 }
 function update(request, response) {
-
+    const id = request.params.id;
+    const postToUpdate = posts.find(post => post.id === id);
+    if (!postToUpdate) {
+        response.status(404);
+        response.json({
+            error: 'nessun post trovato a questo id',
+            results: null
+        })
+        return;
+    }
+    const { title, content, image, tags, prep_time } = request.body;
     response.json({
         results: 'modificato post'
     })
