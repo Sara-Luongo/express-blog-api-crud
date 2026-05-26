@@ -62,6 +62,23 @@ function create(request, response) {
         return;
     };
 
+    if (!content || typeof title !== 'string' || title.trim() === "") {
+        response.status(400)
+        response.json({
+            error: 'la descrizione non è valida',
+            results: null
+        });
+        return;
+    }
+    if (content.length < 100) {
+        response.status(400)
+        response.json({
+            error: 'la descrizione inserita è minore di 100 caratteri',
+            results: null
+        })
+        return;
+    }
+
 
     response.json({
         results: 'nuovo post creato'
