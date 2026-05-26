@@ -62,7 +62,7 @@ function create(request, response) {
         return;
     };
 
-    if (!content || typeof title !== 'string' || title.trim() === "") {
+    if (!content || typeof title !== 'string' || content.trim() === "") {
         response.status(400)
         response.json({
             error: 'la descrizione non è valida',
@@ -97,14 +97,15 @@ function create(request, response) {
     };
 
     if (!Array.isArray(tags)) {
-        response.status(400)
+        response.status(400);
         response.json({
             error: 'i tags devono essere un array!',
             results: null
         });
+        return;
     }
-    return;
-    if (tags.length = 0) {
+
+    if (tags.length === 0) {
         response.json({
             error: 'array vuoto',
             results: null
@@ -121,7 +122,7 @@ function create(request, response) {
         }
     }
 
-    if (!prep_time || typeof prep_time !== 'number' || prep_time.trim() === "") {
+    if (!prep_time || typeof prep_time !== 'number') {
         response.json({
             error: 'questo campo è obbligatorio e deve contenere solo numeri',
             results: null
@@ -138,23 +139,27 @@ function create(request, response) {
 
     let newId = 1
     if (posts.length > 0) {
-        newId = posts[postslength - 1].id + 1
+        newId = posts[posts.length - 1].id + 1
     };
-    const newSlug = title.toLowerCase().trim().replaceAll("", "-");
+    const newSlug = title.toLowerCase().trim().replaceAll(" ", "-");
 
     const newPost = {
         id: newId,
         title,
         content,
         image,
+        prep_time,
         tags,
         slug: newSlug,
         published: true
-
     };
 
+    posts.push(newPost)
+
+    response.status(201)
     response.json({
-        results: 'nuovo post creato'
+        results: 'nuovo post creato',
+        response: newPost
     })
 }
 function update(request, response) {
